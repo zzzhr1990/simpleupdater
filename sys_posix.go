@@ -23,6 +23,7 @@ var (
 )
 
 func move(dst, src string) error {
+	println("move ", dst, " ---> ", src)
 	if err := os.Rename(src, dst); err == nil {
 		return nil
 	}
