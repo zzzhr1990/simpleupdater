@@ -34,8 +34,14 @@ func move(dst, src string) error {
 	//HACK: we're shelling out to mv because linux
 	//throws errors when crossing device boundaries.
 	//TODO see sys_posix_mv.go
-	if err = exec.Command("mv", src, dst).Run(); err != nil {
+	cmd := exec.Command("mv", src, dst)
+	if err = cmd.Run(); err != nil {
 		println("mv error: ", err.Error())
+		d, err := cmd.CombinedOutput()
+		if err != nil {
+			println("mv comb output error: ", err.Error())
+		}
+		println("mv comb output: ", string(d))
 		return err
 	}
 
