@@ -24,13 +24,18 @@ var (
 
 func move(dst, src string) error {
 	println("move ", dst, " ---> ", src)
-	if err := os.Rename(src, dst); err == nil {
+	err := os.Rename(src, dst)
+	if err == nil {
 		return nil
+	}
+	if err != nil {
+		println("move error: ", err.Error())
 	}
 	//HACK: we're shelling out to mv because linux
 	//throws errors when crossing device boundaries.
 	//TODO see sys_posix_mv.go
-	if err := exec.Command("mv", src, dst).Run(); err != nil {
+	if err = exec.Command("mv", src, dst).Run(); err != nil {
+		println("mv error: ", err.Error())
 		return err
 	}
 
