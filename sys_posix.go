@@ -42,12 +42,14 @@ func move(dst, src string) error {
 	}
 
 	// Run sync to 'commit' the mv by clearing caches
-	cmd2 := syncCmd()
-	if red, err := cmd2.CombinedOutput(); err != nil {
-		println("sync error: ", err.Error())
-		println("sync comb output: ", string(red))
-		return err
-	}
+	/*
+		cmd2 := syncCmd()
+		if red, err := cmd2.CombinedOutput(); err != nil {
+			println("sync error: ", err.Error())
+			println("sync comb output: ", string(red))
+			return err
+		}
+	*/
 	return nil
 }
 
