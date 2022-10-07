@@ -35,25 +35,17 @@ func move(dst, src string) error {
 	//throws errors when crossing device boundaries.
 	//TODO see sys_posix_mv.go
 	cmd := exec.Command("mv", src, dst)
-	if err = cmd.Run(); err != nil {
+	if data, err := cmd.CombinedOutput(); err != nil {
 		println("mv error: ", err.Error())
-		d, err := cmd.CombinedOutput()
-		if err != nil {
-			println("mv comb output error: ", err.Error())
-		}
-		println("mv comb output: ", string(d))
+		println("mv comb output: ", string(data))
 		return err
 	}
 
 	// Run sync to 'commit' the mv by clearing caches
 	cmd2 := syncCmd()
-	if err = cmd2.Run(); err != nil {
+	if red, err := cmd2.CombinedOutput(); err != nil {
 		println("sync error: ", err.Error())
-		d, err := cmd2.CombinedOutput()
-		if err != nil {
-			println("sync comb output error: ", err.Error())
-		}
-		println("sync comb output: ", string(d))
+		println("sync comb output: ", string(red))
 		return err
 	}
 	return nil
